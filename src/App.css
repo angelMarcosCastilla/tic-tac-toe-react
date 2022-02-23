@@ -11,19 +11,24 @@ body {
 ::before {
   box-sizing: border-box;
 }
-
-.container {
-  width: 90%;
-  max-width: 350px;
-  min-height: 600px;
-  aspect-ratio: 9/4;
+.grid {
+  width: 1000px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
 }
-
+.container {
+  min-height: 500px;
+}
+.container-chat {
+  position: relative;
+}
 .gridBoard {
   height: 350px;
+  width: 350px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  margin: 0 auto;
 }
 .cell:nth-child(1) {
   border: none;
@@ -91,4 +96,76 @@ body {
   transform: rotate(90deg);
   transform-origin: center;
   box-shadow: 0 0 20px greenyellow;
+}
+
+.chat {
+  height: 430px;
+  border: 1px solid white;
+  padding: 2rem 1rem;
+  overflow-y: scroll;
+  
+}
+.chat::-webkit-scrollbar {
+  background-color: rgba(188, 176, 241, 0.103);
+  width: 4px;
+  }
+
+  .chat::-webkit-scrollbar-thumb {
+    background-color: rgb(1, 53, 87);
+    
+    }
+
+.input-group {
+  width: 100%;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.input {
+  padding: 0.7rem;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+.button {
+  outline: none;
+  border: none;
+  padding: 0 1rem;
+  background-color: black;
+  color: white;
+}
+
+.btn-circle {
+  all: unset;
+  width: 50px;
+  border-radius: 50%;
+  text-align: center;
+  display: grid;
+  place-items: center;
+}
+
+.chat-item {
+  display: block;
+  margin-bottom: 2rem;
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  color: white;
+}
+
+.chat-item--rigth {
+  margin-left: auto;
+  border-bottom-right-radius: 15px;
+  background-color: rgb(23, 93, 223);
+}
+.chat-item--left {
+  border-bottom-left-radius: 15px;
+  background-color: rgb(5, 129, 22);
 }
