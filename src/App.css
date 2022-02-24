@@ -12,9 +12,10 @@ body {
   box-sizing: border-box;
 }
 .grid {
-  width: 1000px;
+  width: 1200px;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns:100px 2fr 1fr;
+  gap: 1rem;
 }
 .container {
   min-height: 500px;
@@ -29,6 +30,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   margin: 0 auto;
+  margin-bottom: 2rem;
 }
 .cell:nth-child(1) {
   border: none;
@@ -68,8 +70,8 @@ body {
 .O {
   width: 60%;
   height: 60%;
-  border: 5px solid rgb(233, 29, 223);
-  box-shadow: 0 0 20px rgb(245, 162, 245);
+  border: 5px solid rgb(37, 92, 209);
+  box-shadow: 0 0 20px rgb(90, 48, 240);
   border-radius: 50%;
   transition: all 0.1s ease;
 }
@@ -103,17 +105,15 @@ body {
   border: 1px solid white;
   padding: 2rem 1rem;
   overflow-y: scroll;
-  
 }
 .chat::-webkit-scrollbar {
   background-color: rgba(188, 176, 241, 0.103);
   width: 4px;
-  }
+}
 
-  .chat::-webkit-scrollbar-thumb {
-    background-color: rgb(1, 53, 87);
-    
-    }
+.chat::-webkit-scrollbar-thumb {
+  background-color: rgb(1, 53, 87);
+}
 
 .input-group {
   width: 100%;
@@ -168,4 +168,67 @@ body {
 .chat-item--left {
   border-bottom-left-radius: 15px;
   background-color: rgb(5, 129, 22);
+}
+.headerInfo {
+  height: 75%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+.turn {
+  font-size: 3.5rem;
+
+}
+
+.turn-X {
+  color: green;
+  text-shadow: 0 0 20px greenyellow;
+}
+
+.turn-O {
+  color: rgb(37, 92, 209);
+  text-shadow: 0 0 20px rgb(90, 48, 240);
+}
+
+.turn__name {
+  font-size: 1rem;
+  display: block;
+  color: white;
+  margin-top: .8rem;
+}
+
+.score{
+  display: flex;
+  justify-content: space-between;
+  width: 350px;
+  margin: 0 auto;
+  margin-top: -2rem;
+  margin-bottom: 4rem;
+  align-items: center;
+  color: white;
+}
+.puntajes{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.09rem;
+}
+
+.ronda{
+  text-align: center;
+  padding: .9rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+  font-size: 1.1rem;
+  gap: 5px;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.ronda__text{
+  font-size: 1.2rem;
 }
