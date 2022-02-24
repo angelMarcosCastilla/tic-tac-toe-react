@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
+import Board from "./components/Board";
+import Chat from "./components/Chat";
+import Modal from "./components/Modal";
+import Score from "./components/Score";
+import useModal from "./hooks/useModal";
+import { PLAYER, STATUS_GAME, MAX_ROUND } from "./config/config";
 import { validateWinner } from "./Utils/validator";
 
 const initialstate = new Array(9).fill("");
-
+const initialstateScore = { E: 0, G: 0, P: 0 };
 let cont = 0;
-const PLAYER = {
-  X: "X",
-  O: "O",
-};
 
-const STATUS_GAME = {
-  isPlaying: true,
-};
 function App() {
   const [cells, setCells] = useState(initialstate);
   const [turn, setTurn] = useState(PLAYER.X);
+  const [round, setRound] = useState(1);
+  const { isopen, openModal, closeModal } = useModal();
+  const [score, setScore] = useState(initialstateScore);
 
   const handleClick = (e, index) => {
     if (!STATUS_GAME.isPlaying) return;
-
     const newCell = [...cells];
     if (!newCell[index]) {
       newCell[index] = turn;
@@ -31,19 +32,41 @@ function App() {
   useEffect(() => {
     let playerTurn = turn === PLAYER.X ? PLAYER.O : PLAYER.X;
     let hasWin;
+
     if (cont > 4) {
       hasWin = validateWinner(playerTurn, cells);
     }
 
+    if (cont > 8 && !hasWin?.playerWin) {
+      STATUS_GAME.isPlaying = !STATUS_GAME.isPlaying;
+      STATUS_GAME.playerWin = "Empate";
+      setScore({...score, E:score.E++})
+      openModal();
+      setTimeout(() => {
+        closeModal();
+        handleNewGame();
+      }, 3000);
+      setRound((prevRound) => prevRound + 1);
+    }
+
     if (hasWin?.playerWin) {
       STATUS_GAME.isPlaying = !STATUS_GAME.isPlaying;
-      // handleNewGame();
+      STATUS_GAME.playerWin = hasWin.playerTurn;
+      setRound((prevRound) => prevRound + 1);
+      openModal();
+      setTimeout(() => {
+        closeModal();
+        handleNewGame();
+      }, 3000);
     }
   }, [turn]);
 
   const handleNewGame = () => {
     setCells(initialstate);
     setTurn(PLAYER.X);
+    STATUS_GAME.isPlaying = !STATUS_GAME.isPlaying;
+    STATUS_GAME.playerWin = "";
+    cont = 0;
   };
 
   return (
@@ -59,71 +82,11 @@ function App() {
         </div>
       </div>
       <div className="container">
-        <div className="score">
-          <div className="ronda">
-            <span className="ronda__text">Ronda</span>
-            <span>1/5</span>
-          </div>
-          <div className="puntajes">
-            <p>G: 0</p>
-            <p>P: 0</p>
-            <p>E: 0</p>
-          </div>
-        </div>
-        <div className="gridBoard">
-          {cells.map((cell, index) => (
-            <div
-              key={index}
-              className="cell"
-              onClick={(e) => handleClick(e, index)}
-            >
-              <span className={cell}></span>
-            </div>
-          ))}
-        </div>
+        <Score round={round} />
+        <Board cells={cells} handleClick={handleClick} />
+        {isopen && <Modal ganador={STATUS_GAME.playerWin} />}
       </div>
-      <div className="container-chat">
-        <div className="chat">
-          <div className="chat-item chat-item--rigth">Hola como estas 😊</div>
-          <div className="chat-item chat-item--left">Bien y tu</div>
-          <div className="chat-item chat-item--rigth">Hola como estas 😊</div>
-          <div className="chat-item chat-item--left">Bien y tu</div>
-          <div className="chat-item chat-item--rigth">Hola como estas 😊</div>
-          <div className="chat-item chat-item--left">Bien y tu</div>
-          <div className="chat-item chat-item--rigth">Hola como estas 😊</div>
-          <div className="chat-item chat-item--left">Bien y tu</div>
-          <div className="chat-item chat-item--rigth">Hola como estas 😊</div>
-          <div className="chat-item chat-item--left">Bien y tu</div>
-        </div>
-        <div className="input-group">
-          <button className="btn-circle">
-            <svg
-              width="14px"
-              height="19px"
-              viewBox="0 0 14 19"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g
-                id="Page-1"
-                stroke="none"
-                stroke-width="1"
-                fill="none"
-                fill-rule="evenodd"
-              >
-                <path
-                  d="M7,12 C8.66,12 9.99,10.66 9.99,9 L10,3 C10,1.34 8.66,0 7,0 C5.34,0 4,1.34 4,3 L4,9 C4,10.66 5.34,12 7,12 Z M12.3,9 C12.3,12 9.76,14.1 7,14.1 C4.24,14.1 1.7,12 1.7,9 L0,9 C0,12.41 2.72,15.23 6,15.72 L6,19 L8,19 L8,15.72 C11.28,15.24 14,12.42 14,9 L12.3,9 Z"
-                  id="mic"
-                  fill="blue"
-                  fill-rule="nonzero"
-                ></path>{" "}
-              </g>{" "}
-            </svg>
-          </button>
-          <input type="text" className="input" />
-          <button className="button">Enviar</button>
-        </div>
-      </div>
+      <Chat />
     </div>
   );
 }
